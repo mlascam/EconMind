@@ -244,6 +244,22 @@ with st.expander(textos[idioma]["usd_section"]):
 
 # 📊 SECTION: Ratio Tipo de Cambio vs IPC
 with st.expander(textos[idioma]["ratio_section"]):
+    st.markdown("### 📊 ¿Qué nos dice el Ratio Tipo de Cambio vs. Inflación?")
+
+    st.markdown("""
+    📌 **Interpretación:**  
+    Este ratio mide cuánto se ha **depreciado** el peso argentino en términos reales comparado con la inflación.  
+    - **Si el ratio aumenta 📈**, significa que el dólar oficial crece más rápido que la inflación → **mayor depreciación real del peso**.  
+    - **Si el ratio cae 📉**, significa que la inflación supera la variación del dólar → **apreciación real del peso**.  
+
+    💡 **Ejemplo práctico:**  
+    Si en enero el dólar sube un **5%**, pero la inflación mensual es del **6%**, el ratio bajará. En términos reales, el peso estaría perdiendo menos valor frente al dólar que contra los precios en la economía.  
+
+    🔍 **¿Por qué importa?**  
+    - Nos dice si los salarios en pesos están perdiendo poder de compra en relación al dólar.  
+    - Es clave para quienes ahorran en dólares o quieren tomar deuda en pesos.  
+    """)
+
     # Ensure both datasets are available
     if df_ipc is not None and df_usd is not None:
         # Convert IPC data to monthly (group by month if needed)
