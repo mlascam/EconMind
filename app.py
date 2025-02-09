@@ -4,6 +4,8 @@ import requests
 import plotly.express as px
 import os
 
+# 🌟 Configure the page layout
+st.set_page_config(page_title="EconMind", layout="wide")
 
 GA_TRACKING_ID = "G-NTX0H753BH"  # Reemplazá con tu ID de Medición
 
@@ -21,8 +23,7 @@ st.markdown(GA_SCRIPT, unsafe_allow_html=True)
 
 
 
-# 🌟 Configure the page layout
-st.set_page_config(page_title="EconMind", layout="wide")
+
 
 # 📌 Header with language selector
 col1, col2 = st.columns([0.8, 0.2])
