@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import plotly.express as px
-from config import BCRA_API_TOKEN  # Ensure your token is defined in config.py
+import os
 
 # 🌟 Configure the page layout
 st.set_page_config(page_title="EconMind", layout="wide")
@@ -74,6 +74,7 @@ IPC_GENERAL_ID = "145.3_INGNACUAL_DICI_M_38"  # IPC General
 IPC_NUCLEO_ID = "173.1_INUCLEOLEO_DIC-_0_10"    # IPC Núcleo
 IPC_API_URL = f"https://apis.datos.gob.ar/series/api/series/?ids={IPC_GENERAL_ID},{IPC_NUCLEO_ID}&format=json"
 BCRA_API_URL = "https://api.estadisticasbcra.com/usd_of"
+BCRA_API_TOKEN = st.secrets["BCRA_API_TOKEN"]
 
 # 📝 Function to obtain IPC data (with caching and error handling)
 @st.cache_data(show_spinner=True)
