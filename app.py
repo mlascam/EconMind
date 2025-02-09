@@ -322,6 +322,33 @@ with st.expander(textos[idioma]["ratio_section"]):
     else:
         st.error("No hay datos suficientes para calcular el ratio.")
 
+# 📊 🔍 SECCIÓN: Fuentes de datos y metodología
+st.divider()
+st.subheader("📊 🔍 Fuentes de Datos y Metodología")
+
+st.markdown("""
+📌 **¿De dónde obtenemos los datos?**  
+Para garantizar la precisión y actualización de la información, los datos provienen de fuentes oficiales y confiables:
+
+- 🔹 **Inflación (IPC General y Núcleo)** → Extraídos directamente de la API de **INDEC** ([Datos Abiertos del Gobierno](https://datos.gob.ar/)).  
+- 🔹 **Tipo de Cambio Oficial** → Obtenido de la API del **Banco Central de la República Argentina (BCRA)** ([Estadísticas BCRA](https://www.bcra.gob.ar/)).  
+
+📌 **¿Cómo los procesamos?**  
+Para cada métrica aplicamos transformaciones que facilitan la interpretación:
+
+- **Tipo de cambio promedio mensual:**  
+  - Los datos del BCRA son diarios, por lo que calculamos el **promedio mensual** para hacerlos comparables con la inflación.
+- **Conversión y limpieza de datos:**  
+  - Normalizamos las fechas y eliminamos valores atípicos o inconsistencias.
+- **Cálculo del Ratio Tipo de Cambio vs. Inflación:**  
+  - Se obtiene dividiendo el tipo de cambio promedio mensual por la inflación mensual.
+
+📌 **¿Por qué es importante esta información?**  
+Con esta metodología aseguramos que **todos los indicadores son consistentes y comparables**.  
+Al usar fuentes oficiales, **reducimos sesgos y garantizamos datos actualizados automáticamente**.
+""")
+
+
 st.divider()
 
 # 📚 SECTION: Articles
