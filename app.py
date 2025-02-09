@@ -4,6 +4,23 @@ import requests
 import plotly.express as px
 import os
 
+
+GA_TRACKING_ID = "G-NTX0H753BH"  # Reemplazá con tu ID de Medición
+
+GA_SCRIPT = f"""
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_TRACKING_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_TRACKING_ID}');
+</script>
+"""
+
+st.markdown(GA_SCRIPT, unsafe_allow_html=True)
+
+
+
 # 🌟 Configure the page layout
 st.set_page_config(page_title="EconMind", layout="wide")
 

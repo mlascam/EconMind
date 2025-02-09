@@ -53,6 +53,8 @@ df2["mes"] = df2["fecha"].dt.to_period("M")
 df2_mensual = df2.groupby("mes")["IPC General"].mean().reset_index()
 
 
+
+
 df_final = pd.merge(df_mensual, df2_mensual, on="mes", how="inner")
 print(df_final)
 
