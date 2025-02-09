@@ -254,10 +254,38 @@ with st.expander(textos[idioma]["ratio_section"]):
 
     💡 **Ejemplo práctico:**  
     Si en enero el dólar sube un **5%**, pero la inflación mensual es del **6%**, el ratio bajará. En términos reales, el peso estaría perdiendo menos valor frente al dólar que contra los precios en la economía.  
+    """)
 
-    🔍 **¿Por qué importa?**  
-    - Nos dice si los salarios en pesos están perdiendo poder de compra en relación al dólar.  
-    - Es clave para quienes ahorran en dólares o quieren tomar deuda en pesos.  
+    # 🔍 Nueva interpretación sobre bienes transables y no transables
+    st.markdown("""
+    🔍 **Impacto en bienes transables vs. no transables:**  
+    - Si la inflación es mayor que el aumento del dólar, los **bienes importados** tienden a **encarecerse menos en pesos** que los **bienes y servicios locales**.  
+
+    💡 **Ejemplo práctico:**  
+    - Un **iPhone (bien transable)** podría costar **menos pesos** que el mes anterior porque su precio **está atado al dólar**.  
+    - Ir a la **peluquería (bien no transable)** podría ser **más caro en pesos**, ya que estos servicios ajustan más rápido a la inflación local.  
+
+    📌 **Conclusión:** El **precio relativo** de los bienes transables sobre los no transables **se abarató**. Esto significa que, en comparación con meses anteriores, comprar bienes importados puede ser más accesible, mientras que los servicios locales pueden volverse más costosos en términos relativos.
+    """)
+
+    # 💰 **¿Por qué es importante este ratio para tomar decisiones económicas?**
+    st.markdown("""
+    💰 **¿Cómo podemos usar este ratio para tomar mejores decisiones?**  
+    Este indicador no solo nos dice cómo se mueve el dólar en relación con la inflación, sino que también **nos ayuda a evaluar decisiones financieras clave**.  
+
+    🔎 **Algunas aplicaciones prácticas:**  
+    - 📉 **¿Conviene ahorrar en dólares o en pesos?**  
+      - Si el ratio **baja**, el peso se aprecia en términos reales, lo que puede hacer que los activos en pesos sean más atractivos.  
+      - Si el ratio **sube**, el dólar se encarece más rápido que la inflación, lo que refuerza su atractivo como refugio de valor.  
+
+    - 🛒 **¿Es un buen momento para comprar bienes importados?**  
+      - Si el ratio cae, los bienes transables **se abaratan en términos relativos** → puede ser un buen momento para comprar productos importados antes de que el dólar vuelva a subir.  
+
+    - 🏡 **¿Conviene tomar deuda en pesos o en dólares?**  
+      - Si el ratio **baja**, significa que el peso pierde menos valor frente al dólar → tomar un crédito en pesos puede ser más beneficioso.  
+      - Si el ratio **sube**, endeudarse en dólares puede ser riesgoso, ya que el tipo de cambio aumenta más rápido que la inflación.  
+
+    📌 **Conclusión:** Este ratio nos da una idea clara de cómo se mueve la economía y nos ayuda a **tomar mejores decisiones de ahorro, consumo e inversión**.  
     """)
 
     # Ensure both datasets are available
