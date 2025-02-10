@@ -8,7 +8,7 @@ import os
 st.set_page_config(page_title="EconMind", layout="wide")
 
 # Google Analytics Tracking (si es necesario)
-GA_TRACKING_ID = "G-NTX0H753BH"  # Reemplaza con tu ID de Medición
+GA_TRACKING_ID = "G-MVC9T3NTZ9"  # Reemplaza con tu ID de Medición
 GA_SCRIPT = f"""
 <script async src="https://www.googletagmanager.com/gtag/js?id={GA_TRACKING_ID}"></script>
 <script>
