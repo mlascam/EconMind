@@ -77,7 +77,7 @@ compra_oficial, venta_oficial = obtener_dolar(URL_OFICIAL, "Dólar Oficial")
 compra_mep, venta_mep = obtener_dolar(URL_MEP, "Dólar MEP")
 
 if venta_oficial and compra_mep:
-    brecha = ((venta_oficial - compra_mep) / compra_mep) * 100
+    brecha = ((compra_mep - venta_oficial) / venta_oficial) * 100
     # Usamos columnas para centrar la card
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
