@@ -21,7 +21,7 @@ GA_SCRIPT = f"""
 st.markdown(GA_SCRIPT, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# Definir el diccionario de textos en español.
+# Diccionario de textos en español
 textos = {
     "title": "Hola! Somos EconMind 🚀",
     "subtitle": "💡 Datos y análisis para que tomes mejores decisiones y mejores tu calidad de vida.",
@@ -44,7 +44,8 @@ textos = {
     "usd_chart_caption": "Datos proporcionados por el BCRA.",
     "ratio_section": "📊 Ratio Tipo de Cambio vs IPC",
     "ratio_chart_title": "Ratio Tipo de Cambio vs IPC General",
-    "ratio_chart_caption": "El ratio se calcula como el promedio mensual del Tipo de Cambio dividido por el IPC General."
+    "ratio_chart_caption": "El ratio se calcula como el promedio mensual del Tipo de Cambio dividido por el IPC General.",
+    "brecha_card_title": "📊 Brecha Cambiaria"
 }
 
 # -----------------------------------------------------------------------------
@@ -54,7 +55,44 @@ st.subheader(textos["subtitle"])
 st.divider()
 
 # -----------------------------------------------------------------------------
-# Definir endpoints de las APIs y IDs
+# SECCIÓN: Brecha Cambiaria (mostrar en una card al tope)
+@st.cache_data(show_spinner=True)
+def obtener_dolar(url, nombre):
+    """Obtiene los valores de compra y venta de Dólar desde la API."""
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        compra = data.get('compra')
+        venta = data.get('venta')
+        return compra, venta
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Error al obtener {nombre}: {e}")
+        return None, None
+
+URL_OFICIAL = "https://dolarapi.com/v1/dolares/oficial"
+URL_MEP = "https://dolarapi.com/v1/dolares/bolsa"
+
+compra_oficial, venta_oficial = obtener_dolar(URL_OFICIAL, "Dólar Oficial")
+compra_mep, venta_mep = obtener_dolar(URL_MEP, "Dólar MEP")
+
+if venta_oficial and compra_mep:
+    brecha = ((venta_oficial - compra_mep) / compra_mep) * 100
+    # Usamos columnas para centrar la card
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.metric(
+            label=textos["brecha_card_title"],
+            value=f"{brecha:.2f}%",
+            delta=f"💵 Dólar Oficial Venta: ${venta_oficial} - 💵 Dólar MEP Compra: ${compra_mep}"
+        )
+else:
+    st.error("❌ No se pudo calcular la brecha cambiaria.")
+
+st.divider()
+
+# -----------------------------------------------------------------------------
+# Endpoints de las APIs y tokens
 IPC_GENERAL_ID = "145.3_INGNACUAL_DICI_M_38"  # IPC General
 IPC_NUCLEO_ID = "173.1_INUCLEOLEO_DIC-_0_10"    # IPC Núcleo
 IPC_API_URL = f"https://apis.datos.gob.ar/series/api/series/?ids={IPC_GENERAL_ID},{IPC_NUCLEO_ID}&format=json"
@@ -80,13 +118,11 @@ def obtener_ipc():
     df = pd.DataFrame(data, columns=["fecha", "IPC General", "IPC Núcleo"])
     df["fecha"] = pd.to_datetime(df["fecha"], format="%Y-%m-%d", errors="coerce")
 
-    # Verificar que existan las columnas esperadas
     expected_columns = {"fecha", "IPC General", "IPC Núcleo"}
     if not expected_columns.issubset(df.columns):
         st.error("❌ La estructura de los datos de IPC no es la esperada.")
         return None
 
-    # Filtrar desde diciembre de 2019 en adelante
     fecha_corte = pd.to_datetime("2019-12-01")
     df = df[df["fecha"] >= fecha_corte]
     return df
@@ -119,7 +155,6 @@ def obtener_usd():
 # -----------------------------------------------------------------------------
 # SECCIÓN: Inflación y Tipo de Cambio (IPC)
 with st.expander(textos["section1"]):
-    # Mostrar los ítems descriptivos
     for item in textos["section1_items"]:
         st.write(item)
 
@@ -133,8 +168,6 @@ with st.expander(textos["section1"]):
             labels={"fecha": "Fecha", "value": "Índice de Precios", "variable": "Indicador"},
             markers=True
         )
-
-        # Agregar un área sombreada para el período COVID-19 (marzo 2020 - diciembre 2021)
         fig.add_vrect(
             x0=pd.to_datetime("2020-03-01"),
             x1=pd.to_datetime("2021-12-31"),
@@ -145,8 +178,6 @@ with st.expander(textos["section1"]):
             layer="below",
             line_width=0
         )
-
-        # Agregar línea y anotación para "Asume Fernández"
         fig.add_shape(
             type="line",
             x0=pd.to_datetime("2019-12-01"),
@@ -167,8 +198,6 @@ with st.expander(textos["section1"]):
             font=dict(size=10, color="blue"),
             xshift=50
         )
-
-        # Agregar línea y anotación para "Asume Milei"
         fig.add_shape(
             type="line",
             x0=pd.to_datetime("2023-12-01"),
@@ -189,7 +218,6 @@ with st.expander(textos["section1"]):
             font=dict(size=10, color="blue"),
             xshift=35
         )
-
         st.plotly_chart(fig, use_container_width=True)
         st.caption(textos["chart_caption"])
         st.caption(textos["chart_source"])
@@ -237,23 +265,14 @@ with st.expander(textos["ratio_section"]):
     💰 **¿Cómo podemos usar este ratio para tomar mejores decisiones?**  
     Este indicador nos ayuda a evaluar decisiones financieras clave, por ejemplo, en términos de ahorro, consumo e inversión.
     """)
-
     if df_ipc is not None and df_usd is not None:
-        # Convertir datos del IPC a promedios mensuales (agrupando por mes)
         df_ipc["mes"] = df_ipc["fecha"].dt.to_period("M")
         df_ipc_monthly = df_ipc.groupby("mes", as_index=False)["IPC General"].mean()
-
-        # Convertir datos USD a promedios mensuales
         df_usd["mes"] = df_usd["fecha"].dt.to_period("M")
         df_usd_monthly = df_usd.groupby("mes", as_index=False)["tipo_cambio"].mean()
-
-        # Fusionar los dataframes por "mes"
         df_ratio = pd.merge(df_ipc_monthly, df_usd_monthly, on="mes", how="inner")
         df_ratio["ratio"] = df_ratio["tipo_cambio"] / df_ratio["IPC General"]
-
-        # Convertir "mes" a timestamp para graficar (usando el inicio del mes)
         df_ratio["fecha"] = df_ratio["mes"].dt.to_timestamp()
-
         fig_ratio = px.line(
             df_ratio,
             x="fecha",
@@ -281,7 +300,6 @@ st.markdown("""
 - **Limpieza y filtrado:** Se normalizan las fechas y se filtra la data desde diciembre de 2019.  
 - **Cálculo del Ratio:** Se divide el tipo de cambio promedio mensual por el IPC General.
 """)
-
 st.divider()
 
 # -----------------------------------------------------------------------------
